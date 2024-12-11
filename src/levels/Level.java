@@ -9,6 +9,8 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import main.Game;
+import objects.spike;
+import utilz.HelpMethods;
 import static utilz.HelpMethods.*;
 
 /**
@@ -19,6 +21,7 @@ public class Level {
     private int [][] lvlData;
     private BufferedImage img;
     private ArrayList<Crabby> crabs;
+    private ArrayList<spike> spikes;
     private int lvlTilesWide;
     private int maxTilesOffset;
     private int maxLvlOffsetX;
@@ -30,6 +33,7 @@ public class Level {
         createEnemies();
         calcLvlOffsets();
         calcPlayerSpawn();
+        createSpikes();
     }
     
     public int getSpriteIndex(int x, int y){
@@ -69,5 +73,13 @@ public class Level {
     
     public Point getPlayerSpawn() {
 	return playerSpawn;
+    }
+
+    private void createSpikes() {
+        spikes = HelpMethods.getSpikes(img);
+    }
+    
+    public ArrayList<spike> getSpike(){
+        return spikes;
     }
 }

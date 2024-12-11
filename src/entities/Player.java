@@ -88,9 +88,11 @@ public class Player extends Entity{
         
         updateAttackBox();
         updatePos();
-        if (attacking) {
+        if (moving) 
+            checkSpikesTouched();
+        if (attacking) 
             checkAttack();
-        }
+        
         updateAnimationTick();
         setAnimation();
         
@@ -329,6 +331,14 @@ public class Player extends Entity{
 		hitbox.x = x;
 		hitbox.y = y;
 	}
+    
+    public void kill() {
+		currentHealth = 0;
+    }
+
+    private void checkSpikesTouched() {
+        playing.checkSpikesTouched(this);
+    }
     
 
     

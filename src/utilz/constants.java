@@ -7,8 +7,21 @@ package utilz;
 import main.Game;
 
 public class constants {
+
     public static final float GRAVITY = 0.04f * Game.SCALE;
     public static final float ANI_SPEED = 25;
+
+    public static class objectConstants {
+
+        public static final int SPIKE = 4;
+
+        public static final int SPIKE_WIDTH_DEFAULT = 32;
+        public static final int SPIKE_HEIGHT_DEFAULT = 32;
+        public static final int SPIKE_WIDTH = (int) (Game.SCALE * SPIKE_WIDTH_DEFAULT);
+        public static final int SPIKE_HEIGHT = (int) (Game.SCALE * SPIKE_HEIGHT_DEFAULT);
+
+    }
+    
     public static class Enemy {
         
         public static final int CRABBY = 0;

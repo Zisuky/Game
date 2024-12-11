@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import levels.LevelManager;
+import objects.ObjectManager;
 import ui.*;
 import utilz.*;
 import static utilz.constants.Environment.*;
@@ -24,12 +25,15 @@ import static utilz.constants.Environment.*;
  */
 public class Playing extends State implements StateMethods {
 
+    
+
     private Player player;
     private LevelManager levelManager;
     private enemyManager enemyManager;
     private pauseOverlay pauseOverlay;
     private gameOverOverlay gameOverOverLay;
     private levelCompletedOverlay levelCompletedOverlay;
+    private ObjectManager objectManager;
 
     private boolean paused = false;
     private boolean lvlCompleted;
@@ -67,6 +71,7 @@ public class Playing extends State implements StateMethods {
     private void initClasses() {
         levelManager = new LevelManager(game);
         enemyManager = new enemyManager(this);
+        objectManager = new ObjectManager(this);
         
         player = new Player(150, 200, (int) (150 * Game.SCALE), (int) (150 * Game.SCALE), this);
         player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
@@ -85,6 +90,7 @@ public class Playing extends State implements StateMethods {
             levelCompletedOverlay.update();
         } else if (!gameOver) {
             levelManager.update();
+            objectManager.update();
             player.update();
             enemyManager.update(levelManager.getCurrentLevel().getLevelData(), player);
             checkCloseToBorder();
@@ -122,11 +128,11 @@ public class Playing extends State implements StateMethods {
         g.drawImage(bgImg, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
 
         drawDecor(g);
-
+        
         levelManager.draw(g, xLvlOffset);
         player.render(g, xLvlOffset);
         enemyManager.draw(g, xLvlOffset);
-
+        objectManager.draw(g, xLvlOffset);
         if (paused) {
             g.setColor(new Color(0, 0, 0, 150));
             g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
@@ -263,6 +269,7 @@ public class Playing extends State implements StateMethods {
         lvlCompleted = false;
         player.resetAll();
         enemyManager.resetAllEnemies();
+        objectManager.resetAllObjects();
     }
 
     public void loadNextLevel() {
@@ -272,7 +279,10 @@ public class Playing extends State implements StateMethods {
     }
 
     private void loadStartLevel() {
+        
         enemyManager.loadEnemy(levelManager.getCurrentLevel());
+        objectManager.loadObjects(levelManager.getCurrentLevel());
+	
     }
 
     private void calcLvlOffset() {
@@ -290,5 +300,13 @@ public class Playing extends State implements StateMethods {
 
     public void setLevelCompleted(boolean levelCompleted) {
         this.lvlCompleted = levelCompleted;
+    }
+    
+    public void checkObjectHit(Rectangle2D.Float attackBox) {
+		objectManager.checkObjectHit(attackBox);
+    }
+    
+    public void checkSpikesTouched(Player p) {
+        objectManager.checkSpikesTouched(p);
     }
 }
