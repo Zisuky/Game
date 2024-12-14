@@ -278,6 +278,10 @@ public class Player extends Entity{
         attackBox.y = hitbox.y + (Game.SCALE * 10);
     }
     
+    private void checkSpikesTouched() {
+        playing.checkSpikesTouched(this);
+    }
+    
     public void resetDirBoolean(){
         left = false;
         right= false;
@@ -336,9 +340,7 @@ public class Player extends Entity{
 		currentHealth = 0;
     }
 
-    private void checkSpikesTouched() {
-        playing.checkSpikesTouched(this);
-    }
+    
     
 
     

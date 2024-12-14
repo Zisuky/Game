@@ -251,7 +251,11 @@ public class Playing extends State implements StateMethods {
     public Player getPlayer() {
         return player;
     }
-
+    
+    public LevelManager getLevelManager() {
+		return levelManager;
+    }
+    
     private void drawDecor(Graphics g) {
         for (int i = 0; i < 3; i++) {
             g.drawImage(bigCloud, i * BIG_CLOUD_WIDTH - (int) (xLvlOffset * 0.3), (int) (204 * Game.SCALE), BIG_CLOUD_WIDTH, BIG_CLOUD_HEIGHT, null);
@@ -309,4 +313,8 @@ public class Playing extends State implements StateMethods {
     public void checkSpikesTouched(Player p) {
         objectManager.checkSpikesTouched(p);
     }
+    
+    public ObjectManager getObjectManager() {
+		return objectManager;
+	}
 }

@@ -10,9 +10,12 @@ import main.Game;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import objects.spike;
+import objects.GameContainer;
+import objects.Potion;
+import objects.Spike;
 import static utilz.constants.Enemy.CRABBY;
-import static utilz.constants.objectConstants.*;
+import static utilz.constants.ObjectConstants.*;
+
 
 
 /**
@@ -22,15 +25,11 @@ import static utilz.constants.objectConstants.*;
 public class HelpMethods {
 
     public static Boolean CanMoveHere(float x, float y, float width, float height, int[][] lvData) {
-        if (!IsSolid(x, y, lvData)) {
-            if (!IsSolid(x + width, y + height, lvData)) {
-                if (!IsSolid(x + width, y, lvData)) {
-                    if (!IsSolid(x, y + height, lvData)) {
+        if (!IsSolid(x, y, lvData)) 
+            if (!IsSolid(x + width, y + height, lvData)) 
+                if (!IsSolid(x + width, y, lvData)) 
+                    if (!IsSolid(x, y + height, lvData)) 
                         return true;
-                    }
-                }
-            }
-        }
         return false;
     }
 
@@ -171,20 +170,46 @@ public class HelpMethods {
         }
         return new Point(1 * Game.TILE_SIZE, 1 * Game.TILE_SIZE);
     }
+    
+    
+    public static ArrayList<Potion> GetPotions(BufferedImage img) {
+                    ArrayList<Potion> list = new ArrayList<>();
+                    for (int j = 0; j < img.getHeight(); j++)
+                            for (int i = 0; i < img.getWidth(); i++) {
+                                    Color color = new Color(img.getRGB(i, j));
+                                    int value = color.getBlue();
+                                    if (value == RED_POTION || value == BLUE_POTION)
+                                            list.add(new Potion(i * Game.TILE_SIZE, j * Game.TILE_SIZE, value));
+                            }
 
-    public static ArrayList<spike> getSpikes(BufferedImage img) {
-        ArrayList<spike> list = new ArrayList<>();
-
-        for (int j = 0; j < img.getHeight(); j++) 
-            for (int i = 0; i < img.getWidth(); i++) {
-                Color color = new Color(img.getRGB(i, j));
-                int value = color.getBlue();
-                if (value == SPIKE) 
-                    list.add(new spike(i * Game.TILE_SIZE, j * Game.TILE_SIZE, SPIKE));
-                
+                    return list;
             }
+
+	public static ArrayList<GameContainer> GetContainers(BufferedImage img) {
+		ArrayList<GameContainer> list = new ArrayList<>();
+		for (int j = 0; j < img.getHeight(); j++)
+			for (int i = 0; i < img.getWidth(); i++) {
+				Color color = new Color(img.getRGB(i, j));
+				int value = color.getBlue();
+				if (value == BOX || value == BARREL)
+					list.add(new GameContainer(i * Game.TILE_SIZE, j * Game.TILE_SIZE, value));
+			}
+
+		return list;
+	}
         
-        return list;
-    }
+    public static ArrayList<Spike> GetSpikes(BufferedImage img) {
+		ArrayList<Spike> list = new ArrayList<>();
+		
+		for (int j = 0; j < img.getHeight(); j++)
+			for (int i = 0; i < img.getWidth(); i++) {
+				Color color = new Color(img.getRGB(i, j));
+				int value = color.getBlue();
+				if (value == SPIKE)
+					list.add(new Spike(i * Game.TILE_SIZE, j * Game.TILE_SIZE, SPIKE));
+			}
+
+		return list;
+	}
 
 }

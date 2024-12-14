@@ -1,85 +1,104 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package levels;
 
-import entities.Crabby;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+
+import entities.Crabby;
 import main.Game;
-import objects.spike;
+import objects.GameContainer;
+import objects.Potion;
+import objects.Spike;
 import utilz.HelpMethods;
-import static utilz.HelpMethods.*;
 
-/**
- *
- * @author loisu
- */
+import static utilz.HelpMethods.GetLevelData;
+import static utilz.HelpMethods.GetCrabs;
+import static utilz.HelpMethods.GetPlayerSpawn;
+
 public class Level {
-    private int [][] lvlData;
-    private BufferedImage img;
-    private ArrayList<Crabby> crabs;
-    private ArrayList<spike> spikes;
-    private int lvlTilesWide;
-    private int maxTilesOffset;
-    private int maxLvlOffsetX;
-    private Point playerSpawn;
-    
-    public Level(BufferedImage img){
-        this.img = img;
-        createLevelData();
-        createEnemies();
-        calcLvlOffsets();
-        calcPlayerSpawn();
-        createSpikes();
-    }
-    
-    public int getSpriteIndex(int x, int y){
-        return lvlData[y][x];
-    }
-    
-    public int[][] getLevelData(){
-        return lvlData;
-    } 
-    
-    private void calcLvlOffsets() {
-        lvlTilesWide = img.getWidth();
-        maxTilesOffset = lvlTilesWide - Game.TILE_INT_WIDTH;
-        maxLvlOffsetX = Game.TILE_SIZE * maxTilesOffset;
-    }
-    
-    private void calcPlayerSpawn() {
-        playerSpawn = GetPlayerSpawn(img);
-    }
-    
-    private void createEnemies() {
-        crabs = GetCrabs(img);
-    }
 
-    private void createLevelData() {
-        lvlData = GetLevelData(img);
-    }
-    
-    
-    public int getLvlOffset(){
-        return maxLvlOffsetX;
-    }
-    
-    public ArrayList<Crabby> getCrabs(){
-        return crabs;
-    }
-    
-    public Point getPlayerSpawn() {
-	return playerSpawn;
-    }
+	private BufferedImage img;
+	private int[][] lvlData;
+	private ArrayList<Crabby> crabs;
+	private ArrayList<Potion> potions;
+	private ArrayList<Spike> spikes;
+	private ArrayList<GameContainer> containers;
+	private int lvlTilesWide;
+	private int maxTilesOffset;
+	private int maxLvlOffsetX;
+	private Point playerSpawn;
 
-    private void createSpikes() {
-        spikes = HelpMethods.getSpikes(img);
-    }
-    
-    public ArrayList<spike> getSpike(){
-        return spikes;
-    }
+	public Level(BufferedImage img) {
+		this.img = img;
+		createLevelData();
+		createEnemies();
+		createPotions();
+		createContainers();
+		createSpikes();
+		calcLvlOffsets();
+		calcPlayerSpawn();
+	}
+
+	private void createSpikes() {
+		spikes = HelpMethods.GetSpikes(img);
+	}
+
+	private void createContainers() {
+		containers = HelpMethods.GetContainers(img);
+	}
+
+	private void createPotions() {
+		potions = HelpMethods.GetPotions(img);
+	}
+
+	private void calcPlayerSpawn() {
+		playerSpawn = GetPlayerSpawn(img);
+	}
+
+	private void calcLvlOffsets() {
+		lvlTilesWide = img.getWidth();
+		maxTilesOffset = lvlTilesWide - Game.TILE_INT_WIDTH;
+		maxLvlOffsetX = Game.TILE_SIZE * maxTilesOffset;
+	}
+
+	private void createEnemies() {
+		crabs = GetCrabs(img);
+	}
+
+	private void createLevelData() {
+		lvlData = GetLevelData(img);
+	}
+
+	public int getSpriteIndex(int x, int y) {
+		return lvlData[y][x];
+	}
+
+	public int[][] getLevelData() {
+		return lvlData;
+	}
+
+	public int getLvlOffset() {
+		return maxLvlOffsetX;
+	}
+
+	public ArrayList<Crabby> getCrabs() {
+		return crabs;
+	}
+
+	public Point getPlayerSpawn() {
+		return playerSpawn;
+	}
+
+	public ArrayList<Potion> getPotions() {
+		return potions;
+	}
+
+	public ArrayList<GameContainer> getContainers() {
+		return containers;
+	}
+
+	public ArrayList<Spike> getSpikes() {
+		return spikes;
+	}
+
 }
