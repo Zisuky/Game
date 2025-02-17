@@ -6,7 +6,8 @@ package objects;
 
 import java.awt.geom.Rectangle2D;
 import main.Game;
-import static utilz.constants.Projectiles.*;
+import static utilz.Constants.Projectiles.*;
+
 
 /**
  *

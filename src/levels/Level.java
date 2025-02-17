@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import entities.Crabby;
 import main.Game;
+import objects.Cannon;
 import objects.GameContainer;
 import objects.Potion;
 import objects.Spike;
@@ -22,6 +23,7 @@ public class Level {
 	private ArrayList<Crabby> crabs;
 	private ArrayList<Potion> potions;
 	private ArrayList<Spike> spikes;
+        private ArrayList<Cannon> cannons;
 	private ArrayList<GameContainer> containers;
 	private int lvlTilesWide;
 	private int maxTilesOffset;
@@ -57,8 +59,8 @@ public class Level {
 
 	private void calcLvlOffsets() {
 		lvlTilesWide = img.getWidth();
-		maxTilesOffset = lvlTilesWide - Game.TILE_INT_WIDTH;
-		maxLvlOffsetX = Game.TILE_SIZE * maxTilesOffset;
+		maxTilesOffset = lvlTilesWide - Game.TILES_IN_WIDTH;
+		maxLvlOffsetX = Game.TILES_SIZE * maxTilesOffset;
 	}
 
 	private void createEnemies() {
@@ -97,8 +99,13 @@ public class Level {
 		return containers;
 	}
 
-	public ArrayList<Spike> getSpikes() {
+	public ArrayList<Spike> getSpike() {
 		return spikes;
 	}
 
+        public ArrayList<Cannon> getCannon(){
+		return cannons;
+	}
+
+    
 }

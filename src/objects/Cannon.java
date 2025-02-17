@@ -5,18 +5,18 @@
 package objects;
 
 import main.Game;
-import objects.GameObject;
+
 
 /**
  *
  * @author loisu
  */
 public class Cannon extends GameObject{
-    private int tileY;
+        private int tileY;
 
 	public Cannon(int x, int y, int objType) {
 		super(x, y, objType);
-		tileY = y / Game.TILE_SIZE;
+		tileY = y / Game.TILES_SIZE;
 		initHitbox(40, 26);
 		hitbox.x -= (int) (4 * Game.SCALE);
 		hitbox.y += (int) (6 * Game.SCALE);

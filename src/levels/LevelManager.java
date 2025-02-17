@@ -29,7 +29,7 @@ public class LevelManager {
     }
     
     private void imfortMap() {
-        BufferedImage img = loadSave.getSpriteAtlas(loadSave.LEVEL_ATLAS);
+        BufferedImage img = loadSave.GetSpriteAtlas(loadSave.LEVEL_ATLAS);
         levelSprite = new BufferedImage[48];
         for(int j = 0; j <4; j++)
             for(int i = 0; i < 12; i++){
@@ -40,10 +40,10 @@ public class LevelManager {
         
     public void draw(Graphics g, int lvlOffset){
       
-        for (int j = 0; j < Game.TILE_INT_HEIGHT; j++) {
+        for (int j = 0; j < Game.TILES_IN_HEIGHT; j++) {
             for (int i = 0; i < levels.get(lvlIndex).getLevelData()[0].length; i++) {
                 int index = levels.get(lvlIndex).getSpriteIndex(i, j);
-                g.drawImage(levelSprite[index], Game.TILE_SIZE * i - lvlOffset, Game.TILE_SIZE * j, Game.TILE_SIZE, Game.TILE_SIZE, null);
+                g.drawImage(levelSprite[index], Game.TILES_SIZE * i - lvlOffset, Game.TILES_SIZE * j, Game.TILES_SIZE, Game.TILES_SIZE, null);
             }
         }
     }
@@ -79,4 +79,7 @@ public class LevelManager {
 	return levels.size();
     }
     
+    public int getLevelIndex() {
+		return lvlIndex;
+	}
 }

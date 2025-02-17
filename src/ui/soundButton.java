@@ -6,28 +6,29 @@ package ui;
 
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import static utilz.constants.PauseButton.*;
+import static utilz.Constants.UI.PauseButtons.SOUND_SIZE_DEFAULT;
+
 import utilz.loadSave;
 
 /**
  *
  * @author loisu
  */
-public class soundButton extends pauseButton{
+public class SoundButton extends PauseButton{
     
     private BufferedImage[][] soundImgs;
 	private boolean mouseOver, mousePressed;
 	private boolean muted;
 	private int rowIndex, colIndex;
 
-	public soundButton(int x, int y, int width, int height) {
+	public SoundButton(int x, int y, int width, int height) {
 		super(x, y, width, height);
 
 		loadSoundImgs();
 	}
 
 	private void loadSoundImgs() {
-		BufferedImage temp = loadSave.getSpriteAtlas(loadSave.SOUND_BUTTON);
+		BufferedImage temp = loadSave.GetSpriteAtlas(loadSave.SOUND_BUTTON);
 		soundImgs = new BufferedImage[2][3];
 		for (int j = 0; j < soundImgs.length; j++)
 			for (int i = 0; i < soundImgs[j].length; i++)

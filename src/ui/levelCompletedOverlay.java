@@ -10,18 +10,18 @@ import java.awt.image.BufferedImage;
 
 
 import main.Game;
-import static utilz.constants.UrmButton.*;
+import static utilz.Constants.UI.URMButtons.*;
 import utilz.loadSave;
 
 
-public class levelCompletedOverlay {
+public class LevelCompletedOverlay {
 
 	private Playing playing;
-	private urmButton menu, next;
+	private UrmButton menu, next;
 	private BufferedImage img;
 	private int bgX, bgY, bgW, bgH;
 
-	public levelCompletedOverlay(Playing playing) {
+	public LevelCompletedOverlay(Playing playing) {
 		this.playing = playing;
 		initImg();
 		initButtons();
@@ -31,12 +31,12 @@ public class levelCompletedOverlay {
 		int menuX = (int) (330 * Game.SCALE);
 		int nextX = (int) (445 * Game.SCALE);
 		int y = (int) (195 * Game.SCALE);
-		next = new urmButton(nextX, y, URM_SIZE, URM_SIZE, 0);
-		menu = new urmButton(menuX, y, URM_SIZE, URM_SIZE, 2);
+		next = new UrmButton(nextX, y, URM_SIZE, URM_SIZE, 0);
+		menu = new UrmButton(menuX, y, URM_SIZE, URM_SIZE, 2);
 	}
 
 	private void initImg() {
-		img = loadSave.getSpriteAtlas(loadSave.COMPLETED);
+		img = loadSave.GetSpriteAtlas(loadSave.COMPLETED);
 		bgW = (int) (img.getWidth() * Game.SCALE);
 		bgH = (int) (img.getHeight() * Game.SCALE);
 		bgX = Game.GAME_WIDTH / 2 - bgW / 2;
@@ -44,7 +44,7 @@ public class levelCompletedOverlay {
 	}
 
 	public void draw(Graphics g) {
-		// Added after youtube upload
+		
 		g.setColor(new Color(0, 0, 0, 200));
 		g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
 
@@ -58,7 +58,7 @@ public class levelCompletedOverlay {
 		menu.update();
 	}
 
-	private boolean isIn(urmButton b, MouseEvent e) {
+	private boolean isIn(UrmButton b, MouseEvent e) {
 		return b.getBounds().contains(e.getX(), e.getY());
 	}
 

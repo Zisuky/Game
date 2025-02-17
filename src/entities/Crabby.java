@@ -4,12 +4,12 @@
  */
 package entities;
 
-import java.awt.Color;
-import java.awt.Graphics;
+
 import java.awt.geom.Rectangle2D;
 import main.Game;
-import static utilz.constants.Direction.*;
-import static utilz.constants.Enemy.*;
+import static utilz.Constants.Directions.*;
+import static utilz.Constants.EnemyConstants.*;
+
                                     
 
 /**
@@ -22,7 +22,7 @@ public class Crabby extends Enemy {
 
     public Crabby(float x, float y) {
         super(x, y, CRABBY_WIDTH, CRABBY_HEIGHT, CRABBY);
-        initHitBox(22,19);
+        initHitbox(22,19);
         initAttackBox();
         
     }

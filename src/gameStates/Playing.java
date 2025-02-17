@@ -1,11 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package gameStates;
-
-import entities.*;
-import main.Game;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -13,308 +6,303 @@ import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import entities.*;
 import levels.LevelManager;
+import main.Game;
 import objects.ObjectManager;
-import ui.*;
-import utilz.*;
-import static utilz.constants.Environment.*;
+import ui.GameOverOverlay;
+import ui.LevelCompletedOverlay;
+import ui.PauseOverlay;
+import utilz.loadSave;
+import static utilz.Constants.Environment.*;
 
-/**
- *
- * @author loisu
- */
 public class Playing extends State implements StateMethods {
+	private Player player;
+	private LevelManager levelManager;
+	private EnemyManager enemyManager;
+	private ObjectManager objectManager;
+	private PauseOverlay pauseOverlay;
+	private GameOverOverlay gameOverOverlay;
+	private LevelCompletedOverlay levelCompletedOverlay;
+	private boolean paused = false;
 
-    
+	private int xLvlOffset;
+	private int leftBorder = (int) (0.2 * Game.GAME_WIDTH);
+	private int rightBorder = (int) (0.8 * Game.GAME_WIDTH);
+	private int maxLvlOffsetX;
 
-    private Player player;
-    private LevelManager levelManager;
-    private enemyManager enemyManager;
-    private pauseOverlay pauseOverlay;
-    private gameOverOverlay gameOverOverLay;
-    private levelCompletedOverlay levelCompletedOverlay;
-    private ObjectManager objectManager;
+	private BufferedImage backgroundImg, bigCloud, smallCloud;
+	private int[] smallCloudsPos;
+	private Random rnd = new Random();
 
-    private boolean paused = false;
-    private boolean lvlCompleted;
-    private boolean gameOver;
-    
-    private int xLvlOffset;
-    private int leftBorder = (int) (0.2 * Game.GAME_WIDTH);
-    private int rightBorder = (int) (0.8 * Game.GAME_WIDTH);
-    
-    private int maxLvlOffsetX;
+	private boolean gameOver;
+	private boolean lvlCompleted;
+	private boolean playerDying;
 
-    private BufferedImage bgImg, bigCloud, smallCloud;
-    private int[] smallCloudsPos;
-    private Random rnd = new Random();
+	public Playing(Game game) {
+		super(game);
+		initClasses();
 
-    
+		backgroundImg = loadSave.GetSpriteAtlas(loadSave.PLAYING_BG);
+		bigCloud = loadSave.GetSpriteAtlas(loadSave.BIG_CLOUD);
+		smallCloud = loadSave.GetSpriteAtlas(loadSave.SMALL_CLOUD);
+		smallCloudsPos = new int[8];
+		for (int i = 0; i < smallCloudsPos.length; i++)
+			smallCloudsPos[i] = (int) (90 * Game.SCALE) + rnd.nextInt((int) (100 * Game.SCALE));
 
+		calcLvlOffset();
+		loadStartLevel();
+	}
 
-    public Playing(Game game) {
-        super(game);
-        initClasses();
-        
-        bgImg = loadSave.getSpriteAtlas(loadSave.PLAYING_BG);
-        bigCloud = loadSave.getSpriteAtlas(loadSave.BIG_CLOUD);
-        smallCloud = loadSave.getSpriteAtlas(loadSave.SMALL_CLOUD);
-        smallCloudsPos = new int[8];
-        
-        for(int i = 0; i < smallCloudsPos.length; i++) 
-            smallCloudsPos[i] = (int) (90 * Game.SCALE) + rnd.nextInt((int) (100 * Game.SCALE));
-        
-        calcLvlOffset();
-        loadStartLevel();
-    }
+	public void loadNextLevel() {
+		
+		levelManager.loadNextLevel();
+		player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
+		resetAll();
+	}
 
-    private void initClasses() {
-        levelManager = new LevelManager(game);
-        enemyManager = new enemyManager(this);
-        objectManager = new ObjectManager(this);
-        
-        player = new Player(150, 200, (int) (150 * Game.SCALE), (int) (150 * Game.SCALE), this);
-        player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
-        player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
-        
-        pauseOverlay = new pauseOverlay(this);
-        gameOverOverLay = new gameOverOverlay(this);
-        levelCompletedOverlay = new levelCompletedOverlay(this);
-    }
+	private void loadStartLevel() {
+		enemyManager.loadEnemy(levelManager.getCurrentLevel());
+		objectManager.loadObjects(levelManager.getCurrentLevel());
+	}
 
-    @Override
-    public void update() {
-        if (paused) {
-            pauseOverlay.update();
-        } else if (lvlCompleted) {
-            levelCompletedOverlay.update();
-        } else if (!gameOver) {
-            levelManager.update();
-            objectManager.update();
-            player.update();
-            enemyManager.update(levelManager.getCurrentLevel().getLevelData(), player);
-            checkCloseToBorder();
-        }
-    }
+	private void calcLvlOffset() {
+		maxLvlOffsetX = levelManager.getCurrentLevel().getLvlOffset();
+	}
 
-    private void checkCloseToBorder() {
-        int playerX = (int) player.getHitbox().x;
-        int diff = playerX - xLvlOffset;
+	private void initClasses() {
+		levelManager = new LevelManager(game);
+		enemyManager = new EnemyManager(this);
+		objectManager = new ObjectManager(this);
 
-        if (diff > rightBorder) {
-            xLvlOffset += diff - rightBorder;
-        } else if (diff < leftBorder) {
-            xLvlOffset += diff - leftBorder;
-        }
+		player = new Player(200, 200, (int) (64 * Game.SCALE), (int) (40 * Game.SCALE), this);
+		player.loadLvlData(levelManager.getCurrentLevel().getLevelData());
+		player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
 
-        if (xLvlOffset > maxLvlOffsetX) {
-            xLvlOffset = maxLvlOffsetX;
-        } else if (xLvlOffset < 0) {
-            xLvlOffset = 0;
-        }
+		pauseOverlay = new PauseOverlay(this);
+		gameOverOverlay = new GameOverOverlay(this);
+		levelCompletedOverlay = new LevelCompletedOverlay(this);
+	}
 
-    }
+	@Override
+	public void update() {
+		if (paused) {
+			pauseOverlay.update();
+		} else if (lvlCompleted) {
+			levelCompletedOverlay.update();
+		} else if (gameOver) {
+			gameOverOverlay.update();
+		} else if (playerDying) {
+			player.update();
+		} else {
+			levelManager.update();
+			objectManager.update(levelManager.getCurrentLevel().getLevelData(), player);
+			player.update();
+			enemyManager.update(levelManager.getCurrentLevel().getLevelData(), player);
+			checkCloseToBorder();
+		}
+	}
 
-    public void checkEnemyHit(Rectangle2D.Float attackBox) {
-        enemyManager.checkEnemyHit(attackBox);
-    }
+	private void checkCloseToBorder() {
+		int playerX = (int) player.getHitbox().x;
+		int diff = playerX - xLvlOffset;
 
-    public void setGameOver(boolean gameOver) {
-        this.gameOver = gameOver;
-    }
+		if (diff > rightBorder)
+			xLvlOffset += diff - rightBorder;
+		else if (diff < leftBorder)
+			xLvlOffset += diff - leftBorder;
 
-    @Override
-    public void draw(Graphics g) {
-        g.drawImage(bgImg, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
+		if (xLvlOffset > maxLvlOffsetX)
+			xLvlOffset = maxLvlOffsetX;
+		else if (xLvlOffset < 0)
+			xLvlOffset = 0;
+	}
 
-        drawDecor(g);
-        
-        levelManager.draw(g, xLvlOffset);
-        player.render(g, xLvlOffset);
-        enemyManager.draw(g, xLvlOffset);
-        objectManager.draw(g, xLvlOffset);
-        if (paused) {
-            g.setColor(new Color(0, 0, 0, 150));
-            g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
-            pauseOverlay.draw(g);
-        } else if (gameOver) {
-            gameOverOverLay.draw(g);
-        } else if (lvlCompleted) {
-            levelCompletedOverlay.draw(g);
-        }
-    }
+	@Override
+	public void draw(Graphics g) {
+		g.drawImage(backgroundImg, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT, null);
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        System.out.println("Mouse Clicked!");
-        if (!gameOver);
-            if (e.getButton() == MouseEvent.BUTTON1) {
-                player.setAttack(true);
-            }
+		drawClouds(g);
 
-    }
+		levelManager.draw(g, xLvlOffset);
+		player.render(g, xLvlOffset);
+		enemyManager.draw(g, xLvlOffset);
+		objectManager.draw(g, xLvlOffset);
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-        if (!gameOver) {
-            if (paused) {
-                pauseOverlay.mousePressed(e);
-            } else if (lvlCompleted) {
-                levelCompletedOverlay.mousePressed(e);
-            }
-        }
-    }
+		if (paused) {
+			g.setColor(new Color(0, 0, 0, 150));
+			g.fillRect(0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT);
+			pauseOverlay.draw(g);
+		} else if (gameOver)
+			gameOverOverlay.draw(g);
+		else if (lvlCompleted)
+			levelCompletedOverlay.draw(g);
+	}
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
-        if (!gameOver) {
-            if (paused) {
-                pauseOverlay.mouseReleased(e);
-            } else if (lvlCompleted) {
-                levelCompletedOverlay.mouseReleased(e);
-            }
-        }
-    }
+	private void drawClouds(Graphics g) {
+		for (int i = 0; i < 3; i++)
+			g.drawImage(bigCloud, i * BIG_CLOUD_WIDTH - (int) (xLvlOffset * 0.3), (int) (204 * Game.SCALE), BIG_CLOUD_WIDTH, BIG_CLOUD_HEIGHT, null);
 
-    @Override
-    public void mouseMoved(MouseEvent e) {
-        if (!gameOver) {
-            if (paused) {
-                pauseOverlay.mouseMoved(e);
-            } else if (lvlCompleted) {
-                levelCompletedOverlay.mouseMoved(e);
-            }
-        }
-    }
+		for (int i = 0; i < smallCloudsPos.length; i++)
+			g.drawImage(smallCloud, SMALL_CLOUD_WIDTH * 4 * i - (int) (xLvlOffset * 0.7), smallCloudsPos[i], SMALL_CLOUD_WIDTH, SMALL_CLOUD_HEIGHT, null);
+	}
 
-    public void mouseDragged(MouseEvent e) {
-        if (!gameOver) {
-            if (paused) {
-                pauseOverlay.mouseDragged(e);
-            }
-        }
-    }
+	public void resetAll() {
+		gameOver = false;
+		paused = false;
+		lvlCompleted = false;
+		playerDying = false;
+		player.resetAll();
+		enemyManager.resetAllEnemies();
+		objectManager.resetAllObjects();
+	}
 
-    @Override
-    public void keyPressed(KeyEvent e) {
+	public void setGameOver(boolean gameOver) {
+		this.gameOver = gameOver;
+	}
 
-        if (gameOver) {
-            gameOverOverLay.keyPressed(e);
-        } else {
-            switch (e.getKeyCode()) {
-
-                case KeyEvent.VK_A:
-                    player.setLeft(true);
-                    break;
-
-                case KeyEvent.VK_D:
-                    player.setRight(true);
-                    break;
-
-                case KeyEvent.VK_SPACE:
-                    player.setJump(true);
-                    break;
-                case KeyEvent.VK_ESCAPE:
-                    paused = !paused;
-                    break;
-            }
-        }
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-        if (!gameOver) {
-            switch (e.getKeyCode()) {
-                case KeyEvent.VK_A:
-                    player.setLeft(false);
-                    break;
-                case KeyEvent.VK_D:
-                    player.setRight(false);
-                    break;
-                case KeyEvent.VK_SPACE:
-                    player.setJump(false);
-                    break;
-            }
-        }
-
-    }
-
-    public void unpauseGame() {
-        paused = false;
-
-    }
-
-    void windowFocusLost() {
-        player.resetDirBoolean();
-    }
-
-    public Player getPlayer() {
-        return player;
-    }
-    
-    public LevelManager getLevelManager() {
-		return levelManager;
-    }
-    
-    private void drawDecor(Graphics g) {
-        for (int i = 0; i < 3; i++) {
-            g.drawImage(bigCloud, i * BIG_CLOUD_WIDTH - (int) (xLvlOffset * 0.3), (int) (204 * Game.SCALE), BIG_CLOUD_WIDTH, BIG_CLOUD_HEIGHT, null);
-        }
-
-        for (int i = 0; i < smallCloudsPos.length; i++) {
-            g.drawImage(smallCloud, SMALL_CLOUD_WIDTH * 4 * i - (int) (xLvlOffset * 0.7), smallCloudsPos[i], SMALL_CLOUD_WIDTH, SMALL_CLOUD_HEIGHT, null);
-        }
-
-    }
-
-    public void resetAll() {
-        gameOver = false;
-        paused = false;
-        lvlCompleted = false;
-        player.resetAll();
-        enemyManager.resetAllEnemies();
-        objectManager.resetAllObjects();
-    }
-
-    public void loadNextLevel() {
-        resetAll();
-        levelManager.loadNextLevel();
-        player.setSpawn(levelManager.getCurrentLevel().getPlayerSpawn());
-    }
-
-    private void loadStartLevel() {
-        
-        enemyManager.loadEnemy(levelManager.getCurrentLevel());
-        objectManager.loadObjects(levelManager.getCurrentLevel());
-	
-    }
-
-    private void calcLvlOffset() {
-        maxLvlOffsetX = levelManager.getCurrentLevel().getLvlOffset();
-    }
-    
-    
-    public enemyManager getEnemyManager() {
-        return enemyManager;
-    }
-
-    public void setMaxLvlOffset(int lvlOffset) {
-        this.maxLvlOffsetX = lvlOffset;
-    }
-
-    public void setLevelCompleted(boolean levelCompleted) {
-        this.lvlCompleted = levelCompleted;
-    }
-    
-    public void checkObjectHit(Rectangle2D.Float attackBox) {
+	public void checkObjectHit(Rectangle2D.Float attackBox) {
 		objectManager.checkObjectHit(attackBox);
-    }
-    
-    public void checkSpikesTouched(Player p) {
-        objectManager.checkSpikesTouched(p);
-    }
-    
-    public ObjectManager getObjectManager() {
+	}
+
+	public void checkEnemyHit(Rectangle2D.Float attackBox) {
+		enemyManager.checkEnemyHit(attackBox);
+	}
+
+	public void checkPotionTouched(Rectangle2D.Float hitbox) {
+		objectManager.checkObjectTouched(hitbox);
+	}
+
+	public void checkSpikesTouched(Player p) {
+		objectManager.checkSpikesTouched(p);
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		if (!gameOver) {
+			if (e.getButton() == MouseEvent.BUTTON1)
+				player.setAttacking(true);
+			else if (e.getButton() == MouseEvent.BUTTON3)
+				player.powerAttack();
+		}
+
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		if (gameOver)
+			gameOverOverlay.keyPressed(e);
+		else
+			switch (e.getKeyCode()) {
+			case KeyEvent.VK_A:
+				player.setLeft(true);
+				break;
+			case KeyEvent.VK_D:
+				player.setRight(true);
+				break;
+			case KeyEvent.VK_SPACE:
+				player.setJump(true);
+				break;
+			case KeyEvent.VK_ESCAPE:
+				paused = !paused;
+				break;
+			}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		if (!gameOver)
+			switch (e.getKeyCode()) {
+			case KeyEvent.VK_A:
+				player.setLeft(false);
+				break;
+			case KeyEvent.VK_D:
+				player.setRight(false);
+				break;
+			case KeyEvent.VK_SPACE:
+				player.setJump(false);
+				break;
+			}
+
+	}
+
+	public void mouseDragged(MouseEvent e) {
+		if (!gameOver)
+			if (paused)
+				pauseOverlay.mouseDragged(e);
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		if (!gameOver) {
+			if (paused)
+				pauseOverlay.mousePressed(e);
+			else if (lvlCompleted)
+				levelCompletedOverlay.mousePressed(e);
+		} else
+			gameOverOverlay.mousePressed(e);
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		if (!gameOver) {
+			if (paused)
+				pauseOverlay.mouseReleased(e);
+			else if (lvlCompleted)
+				levelCompletedOverlay.mouseReleased(e);
+		} else
+			gameOverOverlay.mouseReleased(e);
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		if (!gameOver) {
+			if (paused)
+				pauseOverlay.mouseMoved(e);
+			else if (lvlCompleted)
+				levelCompletedOverlay.mouseMoved(e);
+		} else
+			gameOverOverlay.mouseMoved(e);
+	}
+
+	public void setLevelCompleted(boolean levelCompleted) {
+		this.lvlCompleted = levelCompleted;
+		if (levelCompleted)
+			game.getAudioPlayer().lvlCompleted();
+	}
+
+	public void setMaxLvlOffset(int lvlOffset) {
+		this.maxLvlOffsetX = lvlOffset;
+	}
+
+	public void unpauseGame() {
+		paused = false;
+	}
+
+	public void windowFocusLost() {
+		player.resetDirBooleans();
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public EnemyManager getEnemyManager() {
+		return enemyManager;
+	}
+
+	public ObjectManager getObjectManager() {
 		return objectManager;
 	}
+
+	public LevelManager getLevelManager() {
+		return levelManager;
+	}
+
+	public void setPlayerDying(boolean playerDying) {
+		this.playerDying = playerDying;
+
+	}
+
 }

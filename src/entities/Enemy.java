@@ -6,10 +6,11 @@ package entities;
 
 import java.awt.geom.Rectangle2D;
 import main.Game;
+import static utilz.Constants.*;
+import static utilz.Constants.Directions.*;
+import static utilz.Constants.EnemyConstants.*;
 import static utilz.HelpMethods.*;
-import static utilz.constants.Direction.*;
-import static utilz.constants.Enemy.*;
-import static utilz.constants.*;
+
 
 /**
  *
@@ -25,7 +26,7 @@ public abstract class Enemy extends Entity {
     protected int walkDir = LEFT;
 
     protected int tileY;
-    protected float attackDistance = Game.TILE_SIZE;
+    protected float attackDistance = Game.TILES_SIZE;
 
     protected boolean active = true;
     protected boolean attackChecked;
@@ -70,8 +71,8 @@ public abstract class Enemy extends Entity {
             airSpeed += GRAVITY;
         } else {
             inAir = false;
-            hitbox.y = getEntityYposUnderRoofOrAboveFloor(hitbox, airSpeed);
-            tileY = (int) (hitbox.y / Game.TILE_SIZE);
+            hitbox.y = GetEntityYPosUnderRoofOrAboveFloor(hitbox, airSpeed);
+            tileY = (int) (hitbox.y / Game.TILES_SIZE);
         }
     }
 
@@ -110,7 +111,7 @@ public abstract class Enemy extends Entity {
     }
 
     protected boolean canSeePlayer(int[][] lvlData, Player player) {
-        int playerTileY = (int) (player.getHitbox().y / Game.TILE_SIZE);
+        int playerTileY = (int) (player.getHitbox().y / Game.TILES_SIZE);
         if (playerTileY == tileY) {
             if (isPlayerInRange(player)) {
                 if (IsSightClear(lvlData, hitbox, player.hitbox, tileY)) {

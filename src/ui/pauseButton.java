@@ -10,11 +10,11 @@ import java.awt.Rectangle;
  *
  * @author loisu
  */
-public class pauseButton {
+public class PauseButton {
     protected int x, y, width, height;
 	protected Rectangle bounds;
 
-	public pauseButton(int x, int y, int width, int height) {
+	public PauseButton(int x, int y, int width, int height) {
 		this.x = x;
 		this.y = y;
 		this.width = width;

@@ -1,42 +1,42 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package utilz;
 
-
 import java.awt.image.BufferedImage;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 
 import javax.imageio.ImageIO;
 
+public class loadSave {
 
-/**
- *
- * @author loisu
- */
-public class loadSave { 
-    public static final String PLAYER_ATLAS = "total.png";
-    public static final String LEVEL_ATLAS = "outside_sprites.png";
-    public static final String MENU_BUTTON = "button_atlas.png";
-    public static final String MENU_BACKGD = "menu_background.png";
-    public static final String PAUSE_BACKGD = "pause_menu.png";
-    public static final String SOUND_BUTTON = "sound_button.png";
-    public static final String URM_BUTTON = "urm_buttons.png";
-    public static final String VOLUME_BUTTON = "volume_buttons.png";
-    public static final String MENU_BACKGROUND = "background_menu.png";
-    public static final String PLAYING_BG = "playing_bg_img.png";
-    public static final String BIG_CLOUD = "big_clouds.png";
-    public static final String SMALL_CLOUD = "small_clouds.png";    
-    public static final String CRAB_ATLAS = "crabby_sprite.png";    
-    public static final String STATUS_BAR = "health_power_bar.png";    
-    public static final String COMPLETED = "completed_sprite.png";    
-    public static final String TRAP = "trap_atlas.png";    
-//    public static final String RE_LAU = "relau.png";    
-    
-    public static BufferedImage getSpriteAtlas(String fileName) {
+	public static final String BIG_CLOUD = "big_clouds.png";
+	public static final String CANNON = "cannon_atlas.png";
+	public static final String CANNON_BALL = "ball.png";
+	public static final String COMPLETED = "completed_sprite.png";
+	public static final String CONTAINER_ATLAS = "objects_sprites.png";
+	public static final String CRAB_ATLAS = "crabby_sprite.png";
+	public static final String DEATH = "death_screen.png";
+	public static final String LEVEL_ATLAS = "outside_sprites.png";
+	public static final String MENU_BACKGD = "menu_background.png";
+	public static final String MENU_BACKGROUND_IMG = "background_menu.png";
+	public static final String MENU_BUTTON = "button_atlas.png";
+	public static final String PAUSE_BACKGD = "pause_menu.png";
+	public static final String PLAYER_ATLAS = "player_sprites.png";
+	public static final String PLAYING_BG = "playing_bg_img.png";
+	public static final String POTION_ATLAS = "potions_sprites.png";
+	public static final String SMALL_CLOUD = "small_clouds.png";
+	public static final String SOUND_BUTTON = "sound_button.png";
+	public static final String STATUS_BAR = "health_power_bar.png";
+	public static final String TRAP = "trap_atlas.png";
+	public static final String URM_BUTTON = "urm_buttons.png";
+	public static final String VOLUME_BUTTON = "volume_buttons.png";
+	public static final String PLAYER = "total.png";
+        public static final String DEATH_SCREEN = "death_screen.png";
+        public static final String OPTIONS_MENU = "options_background.png";
+
+	public static BufferedImage GetSpriteAtlas(String fileName) {
 		BufferedImage img = null;
 		InputStream is = loadSave.class.getResourceAsStream("/res/" + fileName);
 		try {
@@ -53,12 +53,10 @@ public class loadSave {
 		}
 		return img;
 	}
-    
-    
-    
-    public static BufferedImage[] GetAllLevels() {
-        URL url = loadSave.class.getResource("/res/lvls");
-        File file = null;
+
+	public static BufferedImage[] GetAllLevels() {
+		URL url = loadSave.class.getResource("/res/lvls/");
+		File file = null;
 
 		try {
 			file = new File(url.toURI());
@@ -75,12 +73,11 @@ public class loadSave {
 					filesSorted[i] = files[j];
 
 			}
-                
+
 		BufferedImage[] imgs = new BufferedImage[filesSorted.length];
-                
+
 		for (int i = 0; i < imgs.length; i++)
 			try {
-                                
 				imgs[i] = ImageIO.read(filesSorted[i]);
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -88,10 +85,5 @@ public class loadSave {
 
 		return imgs;
 	}
-    
-    
-    
-    
-}
 
-    
+}

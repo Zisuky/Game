@@ -7,14 +7,15 @@ package ui;
 import gameStates.GameState;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import static utilz.constants.Buttons.*;
+import static utilz.Constants.UI.Buttons.*;
+
 import utilz.loadSave;
 
 /**
  *
  * @author loisu
  */
-public class menuButton {
+public class MenuButton {
     private int xPos, yPos, rowIndex, index;
 	private int xOffsetCenter = B_WIDTH / 2;
 	private GameState state;
@@ -22,7 +23,7 @@ public class menuButton {
 	private boolean mouseOver, mousePressed;
 	private Rectangle bounds;
 
-	public menuButton(int xPos, int yPos, int rowIndex, GameState state) {
+	public MenuButton(int xPos, int yPos, int rowIndex, GameState state) {
 		this.xPos = xPos;
 		this.yPos = yPos;
 		this.rowIndex = rowIndex;
@@ -38,7 +39,7 @@ public class menuButton {
 
 	private void loadImgs() {
 		imgs = new BufferedImage[3];
-		BufferedImage temp = loadSave.getSpriteAtlas(loadSave.MENU_BUTTON);
+		BufferedImage temp = loadSave.GetSpriteAtlas(loadSave.MENU_BUTTON);
 		for (int i = 0; i < imgs.length; i++)
 			imgs[i] = temp.getSubimage(i * B_WIDTH_DEFAULT, rowIndex * B_HEIGHT_DEFAULT, B_WIDTH_DEFAULT, B_HEIGHT_DEFAULT);
 	}

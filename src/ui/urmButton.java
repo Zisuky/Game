@@ -1,32 +1,27 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package ui;
+
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
 import utilz.loadSave;
-import static utilz.constants.UrmButton.*;
+import static utilz.Constants.UI.URMButtons.*;
 
-public class urmButton extends pauseButton{
-
-
+public class UrmButton extends PauseButton {
 	private BufferedImage[] imgs;
 	private int rowIndex, index;
 	private boolean mouseOver, mousePressed;
 
-	public urmButton(int x, int y, int width, int height, int rowIndex) {
+	public UrmButton(int x, int y, int width, int height, int rowIndex) {
 		super(x, y, width, height);
 		this.rowIndex = rowIndex;
 		loadImgs();
 	}
 
 	private void loadImgs() {
-		BufferedImage temp = loadSave.getSpriteAtlas(loadSave.URM_BUTTON);
+		BufferedImage temp = loadSave.GetSpriteAtlas(loadSave.URM_BUTTON);
 		imgs = new BufferedImage[3];
 		for (int i = 0; i < imgs.length; i++)
-			imgs[i] = temp.getSubimage(i * URM_SIZE_DEFAULT, rowIndex * URM_SIZE_DEFAULT, URM_SIZE_DEFAULT, URM_SIZE_DEFAULT);
+			imgs[i] = temp.getSubimage(i * URM_DEFAULT_SIZE, rowIndex * URM_DEFAULT_SIZE, URM_DEFAULT_SIZE, URM_DEFAULT_SIZE);
 
 	}
 
@@ -65,5 +60,3 @@ public class urmButton extends pauseButton{
 	}
 
 }
-
-

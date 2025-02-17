@@ -8,7 +8,7 @@ import main.Game;
 import java.awt.Graphics;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-import ui.menuButton;
+import ui.MenuButton;
 import utilz.loadSave;
 
 /**
@@ -17,7 +17,7 @@ import utilz.loadSave;
  */
 public class Menu extends State implements StateMethods {
 
-    private menuButton[] buttons = new menuButton[3];
+    private MenuButton[] buttons = new MenuButton[3];
     private BufferedImage bgImg, bgImgP;
     private int menuX, menuY, menuWidth, menuHeight;
 
@@ -25,24 +25,24 @@ public class Menu extends State implements StateMethods {
         super(game);
         loadButtons();
         loadBackground();
-        bgImgP = loadSave.getSpriteAtlas(loadSave.MENU_BACKGROUND);
+        bgImgP = loadSave.GetSpriteAtlas(loadSave.MENU_BACKGD);
     }
 
     private void loadButtons() {
-        buttons[0] = new menuButton(Game.GAME_WIDTH / 2, (int) (150 * Game.SCALE), 0, GameState.PLAYING);
-        buttons[1] = new menuButton(Game.GAME_WIDTH / 2, (int) (220 * Game.SCALE), 1, GameState.OPTIONS);
-        buttons[2] = new menuButton(Game.GAME_WIDTH / 2, (int) (290 * Game.SCALE), 2, GameState.QUIT);
+        buttons[0] = new MenuButton(Game.GAME_WIDTH / 2, (int) (150 * Game.SCALE), 0, GameState.PLAYING);
+        buttons[1] = new MenuButton(Game.GAME_WIDTH / 2, (int) (220 * Game.SCALE), 1, GameState.OPTIONS);
+        buttons[2] = new MenuButton(Game.GAME_WIDTH / 2, (int) (290 * Game.SCALE), 2, GameState.QUIT);
     }
 
     @Override
     public void update() {
-        for (menuButton mb : buttons) {
+        for (MenuButton mb : buttons) {
             mb.update();
         }
     }
 
     private void loadBackground() {
-        bgImg = loadSave.getSpriteAtlas(loadSave.MENU_BACKGD);
+        bgImg = loadSave.GetSpriteAtlas(loadSave.MENU_BACKGD);
         menuWidth = (int) (bgImg.getWidth() * Game.SCALE);
         menuHeight = (int) (bgImg.getHeight() * Game.SCALE);
         menuX = Game.GAME_WIDTH / 2 - menuWidth / 2;
@@ -55,7 +55,7 @@ public class Menu extends State implements StateMethods {
         g.drawImage(bgImgP, 0, 0, Game.GAME_WIDTH, Game.GAME_HEIGHT,null);
         
         g.drawImage(bgImg, menuX, menuY, menuWidth, menuHeight, null);
-        for (menuButton mb : buttons) 
+        for (MenuButton mb : buttons) 
             mb.draw(g);
         
     }
@@ -64,7 +64,7 @@ public class Menu extends State implements StateMethods {
 
     @Override
     public void mousePressed(MouseEvent e) {
-        for (menuButton mb : buttons) {
+        for (MenuButton mb : buttons) {
             if (isIn(e, mb)) {
                 mb.setMousePressed(true);
             }
@@ -73,7 +73,7 @@ public class Menu extends State implements StateMethods {
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        for (menuButton mb : buttons) {
+        for (MenuButton mb : buttons) {
             if (isIn(e, mb)) {
                 if (mb.isMousePressed()) {
                     mb.applyGamestate();
@@ -87,7 +87,7 @@ public class Menu extends State implements StateMethods {
     }
 
     private void resetButtons() {
-        for (menuButton mb : buttons) {
+        for (MenuButton mb : buttons) {
             mb.resetBools();
         }
 
@@ -95,11 +95,11 @@ public class Menu extends State implements StateMethods {
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        for (menuButton mb : buttons) {
+        for (MenuButton mb : buttons) {
             mb.setMouseOver(false);
         }
 
-        for (menuButton mb : buttons) {
+        for (MenuButton mb : buttons) {
             if (isIn(e, mb)) {
                 mb.setMouseOver(true);
                 break;
