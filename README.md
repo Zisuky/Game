@@ -8,7 +8,7 @@ Di chuyển và Tấn công:
 - Di chuyển phải : D
 - Nhảy : Space
 - Tấn công 1: Left Mouse
-- Tấn công 2: Right Mouse (Tích đủ thanh mana ở dưới thanh máu)
-Mỗi quái  sẽ có vùng di chuyển từ điểm khởi đầu đến điểm kết thúc. 
-Trong mỗi lượt, bạn sẽ phải di chuyển nhân vật đến tấn công hết số quái có trong cửa ải đó,
+- Tấn công 2: Right Mouse (Tích đủ thanh mana ở dưới thanh máu).
+Mỗi quái  sẽ có vùng di chuyển từ điểm khởi đầu đến điểm kết thúc,
+trong mỗi lượt, bạn sẽ phải di chuyển nhân vật đến tấn công hết số quái có trong cửa ải đó,
 Sau khi tiêu diệt hết số quái có trong cửa ải thì bạn mới có thể đi tiếp sang cửa ải mới.
