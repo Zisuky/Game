@@ -34,7 +34,7 @@ public class GameOptions extends State implements StateMethods {
 	}
 
 	private void loadImgs() {
-		backgroundImg = loadSave.GetSpriteAtlas(loadSave.MENU_BACKGROUND_IMG);
+		backgroundImg = loadSave.GetSpriteAtlas(loadSave.BACKGROUND);
 		optionsBackgroundImg = loadSave.GetSpriteAtlas(loadSave.OPTIONS_MENU);
 
 		bgW = (int) (optionsBackgroundImg.getWidth() * Game.SCALE);

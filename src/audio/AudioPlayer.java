@@ -12,7 +12,7 @@ public class AudioPlayer {
 	public static int LEVEL_1 = 1;
 	public static int LEVEL_2 = 2;
 
-	public static int DIE = 0;
+	public static int DEAD = 0;
 	public static int JUMP = 1;
 	public static int GAMEOVER = 2;
 	public static int LVL_COMPLETED = 3;

@@ -15,7 +15,6 @@ import javax.swing.JFrame;
  */
 public class GameWindow {
     private JFrame jframe;
-    private GamePanel gamePanel;
     
     public GameWindow(GamePanel gamePanel) {
         jframe = new JFrame();

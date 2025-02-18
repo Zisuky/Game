@@ -1,17 +1,10 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package ui;
 
 import java.awt.Rectangle;
 
-/**
- *
- * @author loisu
- */
 public class PauseButton {
-    protected int x, y, width, height;
+
+	protected int x, y, width, height;
 	protected Rectangle bounds;
 
 	public PauseButton(int x, int y, int width, int height) {
@@ -65,4 +58,5 @@ public class PauseButton {
 	public void setBounds(Rectangle bounds) {
 		this.bounds = bounds;
 	}
+
 }

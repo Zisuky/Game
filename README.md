@@ -4,6 +4,11 @@ chuyến hành trình của lữ khách này phải trải qua các hang ổ c�
 Liệu bạn có thể giúp vị lữ khách này vượt qua bao nhiêu cửa ải?
 CÁC QUY LUẬT CHƠI:
 Di chuyển và Tấn công:
+- Di chuyển trái : A
+- Di chuyển phải : D
+- Nhảy : Space
+- Tấn công 1: Left Mouse
+- Tấn công 2: Right Mouse (Tích đủ thanh mana ở dưới thanh máu)
 Mỗi quái  sẽ có vùng di chuyển từ điểm khởi đầu đến điểm kết thúc. 
 Trong mỗi lượt, bạn sẽ phải di chuyển nhân vật đến tấn công hết số quái có trong cửa ải đó,
 Sau khi tiêu diệt hết số quái có trong cửa ải thì bạn mới có thể đi tiếp sang cửa ải mới.

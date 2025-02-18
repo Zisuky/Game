@@ -21,7 +21,7 @@ public class Player extends Entity {
 	private boolean left, right, jump;
 	private int[][] lvlData;
 	private float xDrawOffset = 65 * Game.SCALE;
-	private float yDrawOffset = 60 * Game.SCALE;
+        private float yDrawOffset = 60 * Game.SCALE;
 
 	// Jumping / Gravity
 	private float jumpSpeed = -2.25f * Game.SCALE;
@@ -70,7 +70,7 @@ public class Player extends Entity {
 		this.currentHealth = 35;
 		this.walkSpeed = Game.SCALE * 1.0f;
 		loadAnimations();
-		initHitbox(20, 27);
+		initHitbox(20, 29);
 		initAttackBox();
 	}
 
@@ -96,7 +96,7 @@ public class Player extends Entity {
 				aniTick = 0;
 				aniIndex = 0;
 				playing.setPlayerDying(true);
-				playing.getGame().getAudioPlayer().playEffect(AudioPlayer.DIE);
+				playing.getGame().getAudioPlayer().playEffect(AudioPlayer.DEAD);
 			} else if (aniIndex == GetSpriteAmount(DEAD) - 1 && aniTick >= ANI_SPEED - 1) {
 				playing.setGameOver(true);
 				playing.getGame().getAudioPlayer().stopSong();
@@ -359,11 +359,11 @@ public class Player extends Entity {
 	}
 
 	private void loadAnimations() {
-		BufferedImage img = loadSave.GetSpriteAtlas(loadSave.PLAYER_ATLAS);
-		animations = new BufferedImage[7][8];
+		BufferedImage img = loadSave.GetSpriteAtlas(loadSave.PLAYER);
+		animations = new BufferedImage[9][8];
 		for (int j = 0; j < animations.length; j++)
 			for (int i = 0; i < animations[j].length; i++)
-				animations[j][i] = img.getSubimage(i * 64, j * 40, 64, 40);
+				animations[j][i] = img.getSubimage(i * 200, j * 200, 200, 200);
 
 		statusBarImg = loadSave.GetSpriteAtlas(loadSave.STATUS_BAR);
 	}

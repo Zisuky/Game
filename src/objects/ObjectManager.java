@@ -35,11 +35,9 @@ public class ObjectManager {
     }
 
     public void checkSpikesTouched(Player p) {
-        for (Spike s : spikes) {
-            if (s.getHitbox().intersects(p.getHitbox())) {
+        for (Spike s : spikes) 
+            if (s.getHitbox().intersects(p.getHitbox())) 
                 p.kill();
-            }
-        }
     }
 
     public void checkObjectTouched(Rectangle2D.Float hitbox) {

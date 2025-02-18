@@ -7,7 +7,7 @@ package gameStates;
 /**
  *
  * @author loisu
- */
+    */
 public enum GameState {
     PLAYING, MENU, OPTIONS, QUIT;
     

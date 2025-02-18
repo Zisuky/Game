@@ -16,7 +16,7 @@ import utilz.loadSave;
  */
 public class SoundButton extends PauseButton{
     
-    private BufferedImage[][] soundImgs;
+        private BufferedImage[][] soundImgs;
 	private boolean mouseOver, mousePressed;
 	private boolean muted;
 	private int rowIndex, colIndex;

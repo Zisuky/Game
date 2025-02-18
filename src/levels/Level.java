@@ -37,10 +37,15 @@ public class Level {
 		createPotions();
 		createContainers();
 		createSpikes();
+                createCannons();
 		calcLvlOffsets();
 		calcPlayerSpawn();
 	}
-
+        
+        private void createCannons() {
+		cannons = HelpMethods.GetCannons(img);
+	}
+        
 	private void createSpikes() {
 		spikes = HelpMethods.GetSpikes(img);
 	}

@@ -89,7 +89,7 @@ public class AudioOptions {
 		musicButton.resetBools();
 		sfxButton.resetBools();
 
-		volumeButton.resetBools();
+		volumeButton.resetBools();  
 	}
 
 	public void mouseMoved(MouseEvent e) {

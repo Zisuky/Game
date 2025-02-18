@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import javax.swing.JPanel;
 import inputs.*;
+import static main.Game.*;
 
 
 
@@ -36,15 +37,11 @@ public class GamePanel extends JPanel{
     }
     
     private void setPanelSize() {
-         Dimension size = new Dimension(Game.GAME_WIDTH, Game.GAME_HEIGHT);
-         
+         Dimension size = new Dimension(GAME_WIDTH, GAME_HEIGHT);
          setPreferredSize(size);
-         System.out.println("SIZE: " + Game.GAME_WIDTH+ "|" + Game.GAME_HEIGHT);
      }
     
-    void updateGame() {
-       
-    }
+    void updateGame() {}
     
     public void paintComponent(Graphics g){
         super.paintComponent(g);

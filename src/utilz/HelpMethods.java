@@ -3,7 +3,8 @@ package utilz;
 import static utilz.Constants.EnemyConstants.CRABBY;
 import static utilz.Constants.ObjectConstants.*;
 
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -36,7 +37,7 @@ public class HelpMethods {
 		float xIndex = x / Game.TILES_SIZE;
 		float yIndex = y / Game.TILES_SIZE;
 
-		return IsTILEolid((int) xIndex, (int) yIndex, lvlData);
+		return IsTileSolid((int) xIndex, (int) yIndex, lvlData);
 	}
 
 	public static boolean IsProjectileHittingLevel(Projectile p, int[][] lvlData) {
@@ -44,7 +45,7 @@ public class HelpMethods {
 
 	}
 
-	public static boolean IsTILEolid(int xTile, int yTile, int[][] lvlData) {
+	public static boolean IsTileSolid(int xTile, int yTile, int[][] lvlData) {
 		int value = lvlData[yTile][xTile];
 
 		if (value >= 48 || value < 0 || value != 11)
@@ -96,22 +97,22 @@ public class HelpMethods {
 		int secondXTile = (int) (secondHitbox.x / Game.TILES_SIZE);
 
 		if (firstXTile > secondXTile)
-			return IsAllTILEClear(secondXTile, firstXTile, yTile, lvlData);
+			return IsAllTilesClear(secondXTile, firstXTile, yTile, lvlData);
 		else
-			return IsAllTILEClear(firstXTile, secondXTile, yTile, lvlData);
+			return IsAllTilesClear(firstXTile, secondXTile, yTile, lvlData);
 	}
 
-	public static boolean IsAllTILEClear(int xStart, int xEnd, int y, int[][] lvlData) {
+	public static boolean IsAllTilesClear(int xStart, int xEnd, int y, int[][] lvlData) {
 		for (int i = 0; i < xEnd - xStart; i++)
-			if (IsTILEolid(xStart + i, y, lvlData))
+			if (IsTileSolid(xStart + i, y, lvlData))
 				return false;
 		return true;
 	}
 
-	public static boolean IsAllTILEWalkable(int xStart, int xEnd, int y, int[][] lvlData) {
-		if (IsAllTILEClear(xStart, xEnd, y, lvlData))
+	public static boolean IsAllTilesWalkable(int xStart, int xEnd, int y, int[][] lvlData) {
+		if (IsAllTilesClear(xStart, xEnd, y, lvlData))
 			for (int i = 0; i < xEnd - xStart; i++) {
-				if (!IsTILEolid(xStart + i, y + 1, lvlData))
+				if (!IsTileSolid(xStart + i, y + 1, lvlData))
 					return false;
 			}
 		return true;
@@ -122,9 +123,9 @@ public class HelpMethods {
 		int secondXTile = (int) (secondHitbox.x / Game.TILES_SIZE);
 
 		if (firstXTile > secondXTile)
-			return IsAllTILEWalkable(secondXTile, firstXTile, yTile, lvlData);
+			return IsAllTilesWalkable(secondXTile, firstXTile, yTile, lvlData);
 		else
-			return IsAllTILEWalkable(firstXTile, secondXTile, yTile, lvlData);
+			return IsAllTilesWalkable(firstXTile, secondXTile, yTile, lvlData);
 	}
 
 	public static int[][] GetLevelData(BufferedImage img) {

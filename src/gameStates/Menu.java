@@ -25,7 +25,7 @@ public class Menu extends State implements StateMethods {
         super(game);
         loadButtons();
         loadBackground();
-        bgImgP = loadSave.GetSpriteAtlas(loadSave.MENU_BACKGD);
+        bgImgP = loadSave.GetSpriteAtlas(loadSave.BACKGROUND);
     }
 
     private void loadButtons() {
@@ -42,7 +42,7 @@ public class Menu extends State implements StateMethods {
     }
 
     private void loadBackground() {
-        bgImg = loadSave.GetSpriteAtlas(loadSave.MENU_BACKGD);
+        bgImg = loadSave.GetSpriteAtlas(loadSave.MENU_START);
         menuWidth = (int) (bgImg.getWidth() * Game.SCALE);
         menuHeight = (int) (bgImg.getHeight() * Game.SCALE);
         menuX = Game.GAME_WIDTH / 2 - menuWidth / 2;
@@ -75,8 +75,10 @@ public class Menu extends State implements StateMethods {
     public void mouseReleased(MouseEvent e) {
         for (MenuButton mb : buttons) {
             if (isIn(e, mb)) {
-                if (mb.isMousePressed()) {
+                if (mb.isMousePressed()) 
                     mb.applyGamestate();
+                if (mb.getState() == GameState.PLAYING) {
+                    game.getAudioPlayer().setLevelSong(game.getPlaying().getLevelManager().getLevelIndex());
                 }
                 break;
             }
@@ -87,31 +89,25 @@ public class Menu extends State implements StateMethods {
     }
 
     private void resetButtons() {
-        for (MenuButton mb : buttons) {
+        for (MenuButton mb : buttons) 
             mb.resetBools();
-        }
-
     }
 
     @Override
     public void mouseMoved(MouseEvent e) {
-        for (MenuButton mb : buttons) {
+        for (MenuButton mb : buttons) 
             mb.setMouseOver(false);
-        }
-
-        for (MenuButton mb : buttons) {
+        
+        for (MenuButton mb : buttons) 
             if (isIn(e, mb)) {
                 mb.setMouseOver(true);
                 break;
             }
-        }
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-            GameState.state = GameState.PLAYING;
-        }
+        
     }
 
     @Override
